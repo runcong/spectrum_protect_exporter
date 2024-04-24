@@ -1,0 +1,51 @@
+groups:
+  - name: spectrum_protect
+    rules:
+      - alert: spectrum_protect_admin_schedule
+        annotations:
+          description: "Spectrum Protect Admin Schedule {{ $labels.schedule_name }} starts {{ $labels.schedule_start }} status: {{ $labels.status }}."
+          summary: spectrum protect admin schedule task has Failed status
+          priority: P2
+        expr: max_over_time(spectrum_protect_admin_schedule{status="Failed"}[60m])
+        labels:
+          severity: critical
+      - alert: spectrum_protect_db
+        annotations:
+          description: "Spectrum Protect DB {{ $labels.location }} has available capacity {{ $value }}% ."
+          summary: Spectrum Protect DB {{ $labels.location }} available capacity below 10%.
+          priority: P2
+        expr: (spectrum_protect_db_free_space_mb * 100/spectrum_protect_db_total_fs_size_mb) < 10
+        labels:
+          severity: critical
+      - alert: spectrum_active_log_space
+        annotations:
+          description: "Spectrum Protect active log free space has available capacity {{ $value }}% ."
+          summary: Spectrum Protect active log free space has available capacity below 10%.
+          priority: P2
+        expr: (spectrum_active_log_space{status="free_space_mb"} * 100/spectrum_active_log_space{status="total_space_mb"}) < 10
+        labels:
+          severity: critical
+      - alert: spectrum_archive_log_fs
+        annotations:
+          description: "Spectrum Protect archive log free space has available capacity {{ $value }}% ."
+          summary: Spectrum Protect archive log free space has available capacity below 10%.
+          priority: P2
+        expr: (spectrum_archive_log_fs{status="archlog_free_fs_mb"} * 100/spectrum_archive_log_fs{status="archlog_tol_fs_mb"}) < 10
+        labels:
+          severity: critical
+      - alert: spectrum_protect_pct_utilized
+        annotations:
+          description: "Spectrum Protect Pool {{ $labels.pool_name }} has data utilized percentage {{ $value }}% ."
+          summary: Spectrum Protect Pool has data utilized percentage above 90%
+          priority: P2
+        expr: max_over_time(spectrum_protect_pct_utilized[60m]) > 90
+        labels:
+          severity: critical
+      - alert: spectrum_protect_tapes
+        annotations:
+          description: "Spectrum Protect has scratch tapes number: {{ $value }}% ."
+          summary: Spectrum Protect has scratch tapes number less than 50
+          priority: P2
+        expr: max_over_time(spectrum_protect_tapes{status="scratch"}[60m]) < 90
+        labels:
+          severity: critical
