@@ -14,10 +14,10 @@ import (
 
 var cmdName string = "dsmadmc"
 var userID string = "dstadmin"
-var password string = "1Qazxsw23edcvfr4"
-var dataOnly string = "yes"
 
-// query := "select count(*) from libvolumes where status='Scratch'"
+// suply your password
+var password string = "YOUR_PASSWORD"
+var dataOnly string = "yes"
 
 var listenAddress = flag.String(
 	"listen-address",
@@ -58,8 +58,6 @@ func main() {
 	registerMetrics()
 	flag.Parse()
 	log.Printf("Starting Server: %s", *listenAddress)
-
-	// http.Handle("/metrics", promhttp.Handler())
 	http.Handle("/metrics", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		tapes_number()
 		pct_utilized()

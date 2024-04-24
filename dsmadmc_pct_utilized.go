@@ -17,14 +17,10 @@ func get_pct_utilized(pool_name string) float64 {
 	output := dsmadmc_query(query)
 	if output == "" {
 		fmt.Println("getting empty value for pool:", pool_name)
-		// log.Fatal("Error getting pct_utilized for pool", pool_name)
-		// return 0
 	} else {
 		value, err := strconv.ParseFloat(output, 64)
 		if err != nil {
-			// log.Fatal(err)
 			fmt.Println("Error getting pct_utilized for pool", pool_name, err)
-			// return 0
 		} else {
 			return value
 		}

@@ -24,22 +24,9 @@ var db_free_space_mb = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 }, []string{"location"})
 
 func db_status() {
-	// cmd := exec.Command("cat", "db_status.txt")
-	// output, err := cmd.Output()
-
-	// if err != nil {
-	// 	fmt.Println("Error executing command:", err)
-	// 	return
-	// }
-
 	output := dsmadmc_query("select location, total_fs_size_mb, used_fs_size_mb, free_space_mb from dbspace")
 	// Split the output into lines
 	lines := strings.Split(string(output), "\n")
-
-	// Remove the first line
-	// lines = lines[1:]
-
-	// Process each line
 	for _, line := range lines {
 		if line != "" {
 			location := strings.Fields(line)[0]

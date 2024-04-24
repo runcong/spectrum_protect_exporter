@@ -18,21 +18,15 @@ var spectrum_protect_archive_log_fs = prometheus.NewGaugeVec(prometheus.GaugeOpt
 }, []string{"status"})
 
 func get_log_usage(status string) float64 {
-	// query := "SELECT pct_utilized FROM stgpools WHERE stgpool_name='" + status + "'"
-	// query := "select" + status + "from log"
 	query := "select " + status + " from log"
-	// fmt.Printf("query: %s\n", query)
 	output := dsmadmc_query(query)
-	// fmt.Printf("output: %s\n", output)
 	if output == "" {
-		// fmt.Println("Error getting pct_utilized for pool", pool_name)
 		log.Fatal("Error get_active_log_space", status)
 		return 0
 	} else {
 		value, err := strconv.ParseFloat(output, 64)
 		if err != nil {
 			log.Fatal(err)
-			// fmt.Println("Error getting pct_utilized for pool", pool_name, err)
 			return 0
 		} else {
 			return value
