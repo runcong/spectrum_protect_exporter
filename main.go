@@ -61,12 +61,12 @@ func main() {
 
 	// http.Handle("/metrics", promhttp.Handler())
 	http.Handle("/metrics", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		tapes_number()
-		pct_utilized()
-		active_log_space()
-		archive_log_fs()
-		db_status()
-		admin_schedule()
+		go tapes_number()
+		go pct_utilized()
+		go active_log_space()
+		go archive_log_fs()
+		go db_status()
+		go admin_schedule()
 
 		promhttp.HandlerFor(reg, promhttp.HandlerOpts{}).ServeHTTP(w, r)
 	}))
