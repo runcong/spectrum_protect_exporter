@@ -22,7 +22,7 @@ groups:
           description: "Spectrum Protect active log free space has available capacity {{ $value }}% ."
           summary: Spectrum Protect active log free space has available capacity below 10%.
           priority: P2
-        expr: (spectrum_active_log_space{status="free_space_mb"} * 100/spectrum_active_log_space{status="total_space_mb"}) < 10
+        expr: (spectrum_active_log_space{status="free_space_mb"} * 100/on()spectrum_active_log_space{status="total_space_mb"}) < 10
         labels:
           severity: critical
       - alert: spectrum_archive_log_fs
@@ -30,7 +30,7 @@ groups:
           description: "Spectrum Protect archive log free space has available capacity {{ $value }}% ."
           summary: Spectrum Protect archive log free space has available capacity below 10%.
           priority: P2
-        expr: (spectrum_protect_archive_log_fs{status="archlog_free_fs_mb"} * 100/spectrum_protect_archive_log_fs{status="archlog_tol_fs_mb"}) < 10
+        expr: (spectrum_protect_archive_log_fs{status="archlog_free_fs_mb"} * 100/on()spectrum_protect_archive_log_fs{status="archlog_tol_fs_mb"}) < 10
         labels:
           severity: critical
       - alert: spectrum_protect_pct_utilized
